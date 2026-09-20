@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma UI Reconstruction"
+  short_description: "Rebuild and visually verify Figma application screens"
+  default_prompt: "Use $figma-ui-reconstruction to implement this Figma screen in the current frontend project and verify the running page."
