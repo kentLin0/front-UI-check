@@ -1,34 +1,34 @@
-# Module description contract
+# 模块说明约定
 
-Create one Markdown file per independently implemented UI module. Use names derived from the design's actual regions or components.
+每个独立实现的 UI 模块编写一份 Markdown 说明，文件名取自设计中的实际区域或组件名称。
 
-Each description should contain:
+每份说明包含：
 
 ```markdown
 # ComponentName
 
-## Responsibility
-Describe the visible region and owned behavior.
+## 职责
+说明可见区域和负责的行为。
 
-## Figma source
-- File: design file name
-- Node: exact node ID
-- Reference dimensions: width × height
+## Figma 来源
+- 文件：设计文件名
+- 节点：准确的节点 ID
+- 参考尺寸：宽 × 高
 
-## Public interface
-List props, emitted events, slots, and important defaults.
+## 公共接口
+列出 props、发出的事件、slots 和重要默认值。
 
-## States and interactions
-List selected, expanded, menu, dialog, search, sorting, pagination, empty, and disabled states.
+## 状态与交互
+列出选中、展开、菜单、弹窗、搜索、排序、分页、空状态和禁用状态。
 
-## Assets and icons
-List design-specific assets and installed UI-library icons.
+## 资源与图标
+列出设计专用资源和已安装 UI 库中的图标。
 
-## Layout invariants
-Record fixed dimensions, fluid behavior, anchoring, column rules, overflow, z-index, and responsive behavior.
+## 布局约束
+记录固定尺寸、流动行为、锚定方式、列规则、溢出、z-index 和响应式行为。
 
-## Verification
-Record the screenshot crop and runtime measurements.
+## 验证
+记录截图裁切区域和运行页面的测量结果。
 ```
 
-Do not freeze responsive behavior into one screenshot measurement. Record Figma dimensions as the reference state and describe the intended resizing, anchoring, wrapping, clipping, and overflow behavior separately.
+不要把响应式行为固化成一张截图上的测量值。Figma 尺寸用于描述参考状态；缩放、锚定、换行、裁切和溢出时的预期行为要另行说明。

@@ -1,46 +1,46 @@
 ---
 name: figma-ui-reconstruction
-description: Reconstruct, implement, or fidelity-correct Figma application screens in frontend code, then verify the real running page with screenshots. Use when a user asks to build, reproduce, align, or pixel-match a Figma design. Skip frontend work without a Figma design reference.
+description: 在前端代码中还原、实现或修正 Figma 应用页面，并通过真实运行页面的截图验证效果。用户要求根据 Figma 设计实现页面、复刻界面或修正视觉差异时使用；没有 Figma 设计参考的前端任务不使用。
 metadata:
-  short-description: Reconstruct and verify Figma application screens
+  short-description: 还原并验证 Figma 应用页面
 ---
 
-# Figma UI Reconstruction
+# Figma 页面还原
 
-Implement the design in the repository's existing frontend stack and verify the rendered application rather than relying only on source code or secondary screenshots.
+在仓库现有的前端技术栈中实现设计稿，并检查实际渲染的页面。不能只根据源码或他人提供的页面截图判断效果。
 
-## Establish the comparison target
+## 确定对照目标
 
-- Resolve the exact Figma node containing the complete screen. Parent groups may include visible layers or overflow content that are absent from a nested frame export.
-- Capture the real running application at an explicit viewport and device scale. Treat a supplied screenshot as supporting evidence unless the user identifies it as the final runtime target.
-- Produce one authoritative Figma reference at the runtime viewport's exact pixel dimensions. If the complete screen spans nested frames or sibling layers, compose or crop them on a 1:1 canvas and verify all required content is visible before review.
-- Compare the Figma reference and local-service capture at the same viewport and device scale. Exclude review annotations, cursor images, canvas padding, and other non-product layers.
-- Before Figma `get_design_context`, load the available Figma design-to-code skill. Before `use_figma`, load the available Figma-use skill.
+- 找到包含完整页面的准确 Figma 节点。父级分组可能包含嵌套画板导出时遗漏的可见图层或溢出内容。
+- 在明确的视口尺寸和设备像素比下截取真实运行页面。用户提供的截图可作为辅助证据；只有用户明确指定时，才把它作为最终运行页面的对照目标。
+- 制作一张与运行页面视口像素尺寸完全一致的 Figma 参考图。如果完整页面跨越嵌套画板或同级图层，应在 1:1 画布上拼合或裁切，并在复核前确认所需内容均可见。
+- 在相同视口和设备像素比下比较 Figma 参考图与本地服务截图。排除审查标注、光标、画布留白等非产品内容。
+- 调用 Figma `get_design_context` 前，先加载可用的 Figma design-to-code Skill；调用 `use_figma` 前，先加载可用的 Figma-use Skill。
 
-## Inspect before implementing
+## 实现前检查项目
 
-Read repository instructions, the application shell, layout styles, existing components, design tokens, and installed UI packages. Reuse the project's established components and conventions where they match the design.
+阅读仓库指令、应用外壳、布局样式、现有组件、设计令牌和已安装的 UI 包。符合设计要求时，沿用项目现有组件与约定。
 
-When modular delivery is requested, map the screen into independently owned regions and give each region a description file using [references/module-contract.md](references/module-contract.md). When using subagents, establish contracts and exclusive file ownership before delegation, then designate one integrator to own shared layout and assembled-page verification.
+用户要求模块化交付时，把页面划分为职责独立的区域，并按 [模块说明约定](references/module-contract.md) 为每个区域编写说明文件。使用子 Agent 时，先确定模块约定和互不重叠的文件归属，再指定一名集成人员负责公共布局及完整页面的验证。
 
-## Implement the layout
+## 实现布局
 
-Build the outer geometry first: viewport, fixed and fluid regions, layout constraints, overflow, and stacking. Then implement content, controls, states, and interactions.
+先完成页面外层几何关系：视口、固定与流动区域、布局约束、溢出和层叠关系；然后实现内容、控件、状态与交互。
 
-Inspect repeated and data-driven structures explicitly. Confirm their headers, items, states, dimensions, and any content extending beyond nested frames. Follow explicit product behavior over an isolated static export, including responsive and fluid-layout requirements.
+明确检查重复结构和数据驱动区域，包括表头、条目、状态、尺寸，以及嵌套画板之外仍应显示的内容。若产品明确要求响应式或流动布局，应遵循该行为，不能只固定在单张静态导出的尺寸上。
 
-Use actual icon components or assets for interface icons. Inspect installed libraries and existing icon abstractions before adding assets. Prefer the project's icon library, then an exact design asset, then a local SVG or icon component. Record a limitation when none is available. Do not simulate icons with font-dependent text characters.
+界面图标使用真实图标组件或资源。添加资源前先检查已安装的图标库和项目现有封装；优先使用项目图标库，其次使用准确的设计资源，最后使用本地 SVG 或图标组件。如果都不可用，记录限制。不要用依赖字体的文字符号模拟图标。
 
-## Verify the running page
+## 验证运行页面
 
-Run the project's relevant checks and production build. Open the actual running application in a browser and set the target viewport. Before every authoritative screenshot, confirm the final URL and intended route, reject login, error, loading, and unintended redirect states, wait for a stable page landmark and required asynchronous content, and wait for `document.fonts.ready`. Capture only after these checks pass. Inspect important layout invariants with DOM rectangles and computed styles when possible.
+运行项目相关检查和生产构建。在浏览器中打开实际运行的应用并设置目标视口。每次正式截图前，确认最终 URL 和目标路由正确；排除登录、错误、加载中和意外跳转状态；等待稳定的页面标识、所需异步内容及 `document.fonts.ready`。这些检查通过后再截图。可以取得 DOM 信息时，检查关键布局区域的矩形坐标和计算样式。
 
-Use direct visual review instead of treating a pixel-diff ratio as truth. When adversarial review is requested, have independent reviewers inspect layout, component detail, and content completeness. Give reviewers only the two authoritative screenshots and explicitly identify excluded annotations.
+直接查看图片差异，不把像素差异比例当作结论。用户要求独立审查时，让审查者分别检查布局、组件细节和内容完整性，只提供两张正式对照截图，并明确哪些标注应排除。
 
-If reviewers disagree or report a suspicious repeated offset, do not change the UI immediately. Crop both images with identical coordinates at original resolution, inspect the local regions, and measure DOM bounds. A finding is actionable only when the images or layout measurements support it. Read [references/visual-review.md](references/visual-review.md) for the full protocol.
+如果审查者意见不一致，或报告可疑的重复偏移，不要立即改动页面。用相同坐标从两张原图裁切相同区域，按原始分辨率检查，并测量 DOM 边界。只有图片或布局测量支持的问题才进入修改。完整方法见 [视觉检查约定](references/visual-review.md)。
 
-## Deliverables
+## 交付内容
 
-Keep the final Figma reference, fresh runtime screenshot, labeled side-by-side review image, requested module descriptions, and a short review record. Record the Figma node, final runtime URL, viewport, device scale, and capture time beside the files. Confirm that paired screenshots have identical dimensions before presenting them together.
+保留最终 Figma 参考图、新采集的运行页面截图、带标签的并排对照图、用户要求的模块说明，以及简短的检查记录。在文件旁记录 Figma 节点、最终运行 URL、视口、设备像素比和采集时间。并排展示前确认两张截图的像素尺寸相同。
 
-Report what changed, the runtime URL and viewport, build results, confirmed remaining limitations such as unavailable fonts, and clickable paths to final artifacts.
+说明代码改动、运行 URL 与视口、构建结果、已确认的剩余限制（例如缺少所需字体），并提供最终产物的可点击路径。
